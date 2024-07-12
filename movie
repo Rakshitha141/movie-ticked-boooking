@@ -1,0 +1,81 @@
+class Movie:
+    def __init__(self, title, genre, synopsis, rating):
+        self.title = title
+        self.genre = genre
+        self.synopsis = synopsis
+        self.rating = rating
+
+class Showtime:
+    def __init__(self, movie, time):
+        self.movie = movie
+        self.time = time
+        self.available_seats = {
+            'A1': True, 'A2': True, 'A3': True, 'A4': True,
+            'B1': True, 'B2': True, 'B3': True, 'B4': True,
+            'C1': True, 'C2': True, 'C3': True, 'C4': True,
+        }
+
+    def book_seat(self, seat):
+        if seat in self.available_seats and self.available_seats[seat]:
+            self.available_seats[seat] = False
+            return True
+        else:
+            return False
+
+class BookingSystem:
+    def __init__(self):
+        self.movies = []
+        self.showtimes = []
+
+    def add_movie(self, movie):
+        self.movies.append(movie)
+
+    def add_showtime(self, showtime):
+        self.showtimes.append(showtime)
+
+    def list_movies(self):
+        print("Available Movies:")
+        for i, movie in enumerate(self.movies, start=1):
+            print(f"{i}. {movie.title}")
+
+    def list_showtimes(self):
+        print("Available Showtimes:")
+        for i, showtime in enumerate(self.showtimes, start=1):
+            print(f"{i}. {showtime.movie.title} - {showtime.time}")
+
+    def book_ticket(self, showtime_index, seat):
+        showtime = self.showtimes[showtime_index]
+        if showtime.book_seat(seat):
+            print(f"Successfully booked seat {seat} for {showtime.movie.title} at {showtime.time}")
+        else:
+            print(f"Seat {seat} is not available.")
+
+# Example usage:
+if __name__ == "__main__":
+    # Initialize the booking system
+    booking_system = BookingSystem()
+
+    # Create some movies
+    movie1 = Movie("Inception", "Sci-Fi", "A thief who enters the dreams of others to steal secrets", "PG-13")
+    movie2 = Movie("The Dark Knight", "Action", "Batman faces his greatest challenge", "PG-13")
+
+    # Add movies to the booking system
+    booking_system.add_movie(movie1)
+    booking_system.add_movie(movie2)
+
+    # Create showtimes
+    showtime1 = Showtime(movie1, "2024-07-12 18:00")
+    showtime2 = Showtime(movie2, "2024-07-12 20:00")
+
+    # Add showtimes to the booking system
+    booking_system.add_showtime(showtime1)
+    booking_system.add_showtime(showtime2)
+
+    # Display available movies and showtimes
+    booking_system.list_movies()
+    booking_system.list_showtimes()
+
+    # Simulate booking a ticket
+    selected_showtime = 1  # assuming the user selects the first showtime
+    selected_seat = 'A1'   # assuming the user selects seat A1
+    booking_system.book_ticket(selected_showtime, selected_seat)
